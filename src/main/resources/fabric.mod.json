@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "rolling_down_in_the_deep",
+	"version": "${version}",
+	"name": "Rolling Down in the Deep",
+	"description": "#TODO: if you see this ingame, please report it to the mod author (me)",
+	"authors": [
+		"enjarai"
+	],
+	"contact": {
+		"homepage": "https://enjarai.nl/",
+		"sources": "https://github.com/enjarai/rolling-down-in-the-deep",
+		"issues": "https://github.com/enjarai/rolling-down-in-the-deep/issues"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/rolling_down_in_the_deep/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"nl.enjarai.RollingDownInTheDeep"
+		]
+	},
+	"mixins": [
+		"rolling_down_in_the_deep.mixins.json"
+	],
+	"depends": {
+		"minecraft": ">=1.19.3- <1.19.4-",
+		"fabric-api": "*",
+		"do_a_barrel_roll": ">2.5.1"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.gg/WcYsDDQtyR"
+			},
+			"parent": "do_a_barrel_roll"
+		}
+	}
+}

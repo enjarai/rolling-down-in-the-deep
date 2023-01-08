@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "nl.enjarai.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ClientPlayerEntityMixin",
+    "EntityMixin",
+    "LivingEntityMixin",
+    "PlayerEntityMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
