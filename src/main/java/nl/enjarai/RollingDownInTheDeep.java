@@ -11,6 +11,8 @@ import nl.enjarai.doabarrelroll.util.ProperLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class RollingDownInTheDeep implements ModInitializer {
 	public static final String MOD_ID = "rolling_down_in_the_deep";
 	public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
@@ -20,17 +22,19 @@ public class RollingDownInTheDeep implements ModInitializer {
 	public void onInitialize() {
 		RollEvents.SHOULD_ROLL_CHECK.register(RollingDownInTheDeep::shouldRoll);
 
-		RollEvents.EARLY_CAMERA_MODIFIERS.register(rotationDelta -> rotationDelta
-				.useModifier(RotationModifiers::strafeButtons),
+		RollEvents.EARLY_CAMERA_MODIFIERS.register((rotationDelta, currentRotation) -> rotationDelta
+				.useModifier(RotationModifiers.strafeButtons(1800)),
 				10, () -> shouldRoll() && !DoABarrelRollClient.isFallFlying());
 
-		RollEvents.LATE_CAMERA_MODIFIERS.register(rotationDelta -> rotationDelta, // TODO slight roll in yaw direction
-//				.useModifier(SwimModifiers::reorient),
-				20, RollingDownInTheDeep::shouldRoll);
+		RollEvents.LATE_CAMERA_MODIFIERS.register((rotationDelta, currentRotation) -> rotationDelta // TODO slight roll in yaw direction
+				.useModifier(SwimModifiers::reorient),
+				40, RollingDownInTheDeep::shouldRoll);
 
-		RollEvents.LATE_CAMERA_MODIFIERS.register(rotationDelta -> rotationDelta
-				.smooth(DoABarrelRollClient.PITCH_SMOOTHER, DoABarrelRollClient.YAW_SMOOTHER,
-						DoABarrelRollClient.ROLL_SMOOTHER, SMOOTHING),
+		RollEvents.LATE_CAMERA_MODIFIERS.register((rotationDelta, currentRotation) -> rotationDelta
+				.useModifier(RotationModifiers.smoothing(
+						DoABarrelRollClient.PITCH_SMOOTHER, DoABarrelRollClient.YAW_SMOOTHER,
+						DoABarrelRollClient.ROLL_SMOOTHER, SMOOTHING
+				)),
 				30, () -> shouldRoll() && !DoABarrelRollClient.isFallFlying());
 	}
 
