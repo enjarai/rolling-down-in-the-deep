@@ -1,6 +1,5 @@
-package nl.enjarai;
+package nl.enjarai.rollingdowninthedeep;
 
-import com.google.common.math.IntMath;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.SmoothUtil;
 import nl.enjarai.doabarrelroll.DoABarrelRollClient;

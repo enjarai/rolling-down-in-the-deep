@@ -1,8 +1,8 @@
-package nl.enjarai.mixin;
+package nl.enjarai.rollingdowninthedeep.mixin;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
-import nl.enjarai.RollingDownInTheDeep;
+import nl.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -19,6 +19,8 @@ public abstract class LivingEntityMixin {
             index = 0
     )
     private double rollingDownInTheDeep$modifySwimGravity(double original) {
+        // Remove most of the gravity that is applied to swimming players,
+        // allowing them to be suspended in water more easily
         if ((Object) this instanceof ClientPlayerEntity clientPlayer &&
                 RollingDownInTheDeep.shouldRoll() &&
                 clientPlayer.isSwimming()) {
