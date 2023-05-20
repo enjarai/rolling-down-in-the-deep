@@ -1,5 +1,6 @@
 package nl.enjarai.rollingdowninthedeep.mixin;
 
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import nl.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
@@ -25,5 +26,17 @@ public abstract class ClientPlayerEntityMixin {
         // This lets us trick the server into letting us stay in swimming mode without having to move constantly.
         return RollingDownInTheDeep.enabled() && isSubmergedInWater()
                 ? ClientCommandC2SPacket.Mode.START_SPRINTING : mode;
+    }
+
+    @WrapWithCondition(
+            method = "tickMovement",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;knockDownwards()V"
+            )
+    )
+    private boolean rollingDownInTheDeep$disableSneakEqualsDown(ClientPlayerEntity instance) {
+        // Disable the downwards momentum applied when sneaking in water
+        return !RollingDownInTheDeep.enabled() || !instance.isSwimming();
     }
 }
