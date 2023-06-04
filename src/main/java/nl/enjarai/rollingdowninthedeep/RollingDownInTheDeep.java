@@ -1,11 +1,13 @@
 package nl.enjarai.rollingdowninthedeep;
 
 import net.fabricmc.api.ModInitializer;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.Identifier;
 import nl.enjarai.doabarrelroll.DoABarrelRollClient;
+import nl.enjarai.doabarrelroll.api.RollEntity;
 import nl.enjarai.doabarrelroll.api.event.RollEvents;
+import nl.enjarai.doabarrelroll.api.event.RollGroup;
 import nl.enjarai.doabarrelroll.config.Sensitivity;
 import nl.enjarai.doabarrelroll.flight.ElytraMath;
 import nl.enjarai.doabarrelroll.flight.RotationModifiers;
@@ -19,25 +21,28 @@ public class RollingDownInTheDeep implements ModInitializer {
 	public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
 	public static final Sensitivity SMOOTHING = new Sensitivity(5, 5, 1);
 
+	public static final RollGroup SWIM_GROUP = RollGroup.of(id("swimming"));
+	public static final RollGroup DABR_GROUP = RollGroup.of(new Identifier("do_a_barrel_roll", "fall_flying"));
+
 	@Override
 	public void onInitialize() {
-		RollEvents.SHOULD_ROLL_CHECK.register(RollingDownInTheDeep::shouldRoll);
+		SWIM_GROUP.trueIf(RollingDownInTheDeep::shouldRoll);
 
-		RollEvents.EARLY_CAMERA_MODIFIERS.register((rotationDelta, currentRotation) -> rotationDelta
+//		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
 //				.useModifier(RotationModifiers.strafeButtons(1800)), // hahha yes, we dont need this do we? i sure hope we dont
-				,
-				10, () -> shouldRoll() && !DoABarrelRollClient.isFallFlying());
+//				,
+//				10, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
-		RollEvents.LATE_CAMERA_MODIFIERS.register((rotationDelta, currentRotation) -> rotationDelta // TODO slight roll in yaw direction
+		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context // TODO slight roll in yaw direction
 				.useModifier(SwimModifiers::reorient),
-				40, RollingDownInTheDeep::shouldRoll);
+				40, SWIM_GROUP);
 
-		RollEvents.LATE_CAMERA_MODIFIERS.register((rotationDelta, currentRotation) -> rotationDelta
+		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context
 				.useModifier(RotationModifiers.smoothing(
 						DoABarrelRollClient.PITCH_SMOOTHER, DoABarrelRollClient.YAW_SMOOTHER,
 						DoABarrelRollClient.ROLL_SMOOTHER, SMOOTHING
 				)),
-				30, () -> shouldRoll() && !DoABarrelRollClient.isFallFlying());
+				30, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 	}
 
 	public static Vector3d handleSwimVelocity(ClientPlayerEntity player, Vector3d moveInput, double speed) {
@@ -45,7 +50,7 @@ public class RollingDownInTheDeep implements ModInitializer {
 		var matrix = new Matrix3d();
 		matrix.rotateY(-player.getYaw() * ElytraMath.TORAD);
 		matrix.rotateX(player.getPitch() * ElytraMath.TORAD);
-		matrix.rotateZ(ElytraMath.getRoll(player.getYaw(), DoABarrelRollClient.left) * ElytraMath.TORAD);
+		matrix.rotateZ(((RollEntity) player).doABarrelRoll$getRoll() * ElytraMath.TORAD);
 
 		moveInput.mul(matrix);
 		if (moveInput.lengthSquared() > 1) {
@@ -65,5 +70,9 @@ public class RollingDownInTheDeep implements ModInitializer {
 
 	public static boolean enabled() {
 		return true;
+	}
+
+	public static Identifier id(String path) {
+		return new Identifier(MOD_ID, path);
 	}
 }

@@ -24,9 +24,9 @@
 		"rolling_down_in_the_deep.mixins.json"
 	],
 	"depends": {
-		"minecraft": ">=1.19.4- <1.19.5-",
+		"minecraft": ">=1.20- <1.20.1-",
 		"fabric-api": "*",
-		"do_a_barrel_roll": ">2.5.1"
+		"do_a_barrel_roll": ">=3.0.0-"
 	},
 	"custom": {
 		"modmenu": {
