@@ -1,11 +1,11 @@
-package nl.enjarai.rollingdowninthedeep;
+package dev.enjarai.rollingdowninthedeep;
 
 import net.minecraft.client.util.SmoothUtil;
 import nl.enjarai.doabarrelroll.DoABarrelRollClient;
 import nl.enjarai.doabarrelroll.api.event.RollContext;
 import nl.enjarai.doabarrelroll.api.rotation.RotationInstant;
 import nl.enjarai.doabarrelroll.config.ModConfig;
-import nl.enjarai.doabarrelroll.flight.ElytraMath;
+import nl.enjarai.doabarrelroll.math.MagicNumbers;
 
 public class SwimModifiers {
     public static final double ROLL_REORIENT_CUTOFF = Math.sqrt(10.0 / 3.0);
@@ -13,7 +13,7 @@ public class SwimModifiers {
 
     public static RotationInstant reorient(RotationInstant rotationInstant, RollContext context) {
         var delta = context.getRenderDelta();
-        var currentRoll = context.getCurrentRotation().roll() * ElytraMath.TORAD;
+        var currentRoll = context.getCurrentRotation().roll() * MagicNumbers.TORAD;
         var strength = 500;
 
         var cutoff = ROLL_REORIENT_CUTOFF;

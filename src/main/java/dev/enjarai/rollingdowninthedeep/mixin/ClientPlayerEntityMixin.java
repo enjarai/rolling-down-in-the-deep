@@ -1,9 +1,9 @@
-package nl.enjarai.rollingdowninthedeep.mixin;
+package dev.enjarai.rollingdowninthedeep.mixin;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
-import nl.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
+import dev.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

@@ -1,10 +1,10 @@
-package nl.enjarai.rollingdowninthedeep.mixin;
+package dev.enjarai.rollingdowninthedeep.mixin;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
-import nl.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
+import dev.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

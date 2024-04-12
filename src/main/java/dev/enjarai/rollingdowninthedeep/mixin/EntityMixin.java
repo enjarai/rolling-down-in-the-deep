@@ -1,9 +1,9 @@
-package nl.enjarai.rollingdowninthedeep.mixin;
+package dev.enjarai.rollingdowninthedeep.mixin;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;
-import nl.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
+import dev.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
 import org.joml.Vector3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

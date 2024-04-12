@@ -1,17 +1,18 @@
-package nl.enjarai.rollingdowninthedeep;
+package dev.enjarai.rollingdowninthedeep;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
+import nl.enjarai.cicada.api.util.ProperLogger;
 import nl.enjarai.doabarrelroll.DoABarrelRollClient;
 import nl.enjarai.doabarrelroll.api.RollEntity;
 import nl.enjarai.doabarrelroll.api.event.RollEvents;
 import nl.enjarai.doabarrelroll.api.event.RollGroup;
+import nl.enjarai.doabarrelroll.config.ModConfig;
 import nl.enjarai.doabarrelroll.config.Sensitivity;
-import nl.enjarai.doabarrelroll.flight.ElytraMath;
 import nl.enjarai.doabarrelroll.flight.RotationModifiers;
-import nl.enjarai.doabarrelroll.util.ProperLogger;
+import nl.enjarai.doabarrelroll.math.MagicNumbers;
 import org.joml.Matrix3d;
 import org.joml.Vector3d;
 import org.slf4j.Logger;
@@ -33,24 +34,28 @@ public class RollingDownInTheDeep implements ModInitializer {
 //				,
 //				10, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
-		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context // TODO slight roll in yaw direction
-				.useModifier(SwimModifiers::reorient),
-				40, SWIM_GROUP);
+		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
+						.useModifier(ModConfig.INSTANCE::configureRotation),
+				1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+
+//		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context // TODO slight roll in yaw direction
+//				.useModifier(SwimModifiers::reorient),
+//				40, SWIM_GROUP);
 
 		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context
 				.useModifier(RotationModifiers.smoothing(
 						DoABarrelRollClient.PITCH_SMOOTHER, DoABarrelRollClient.YAW_SMOOTHER,
 						DoABarrelRollClient.ROLL_SMOOTHER, SMOOTHING
 				)),
-				30, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+				3000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 	}
 
 	public static Vector3d handleSwimVelocity(ClientPlayerEntity player, Vector3d moveInput, double speed) {
 		// Rotate the input vector to match the player's rotation
 		var matrix = new Matrix3d();
-		matrix.rotateY(-player.getYaw() * ElytraMath.TORAD);
-		matrix.rotateX(player.getPitch() * ElytraMath.TORAD);
-		matrix.rotateZ(((RollEntity) player).doABarrelRoll$getRoll() * ElytraMath.TORAD);
+		matrix.rotateY(-player.getYaw() * MagicNumbers.TORAD);
+		matrix.rotateX(player.getPitch() * MagicNumbers.TORAD);
+		matrix.rotateZ(((RollEntity) player).doABarrelRoll$getRoll() * MagicNumbers.TORAD);
 
 		moveInput.mul(matrix);
 		if (moveInput.lengthSquared() > 1) {

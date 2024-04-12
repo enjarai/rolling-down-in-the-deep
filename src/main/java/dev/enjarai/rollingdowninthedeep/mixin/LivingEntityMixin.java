@@ -1,8 +1,8 @@
-package nl.enjarai.rollingdowninthedeep.mixin;
+package dev.enjarai.rollingdowninthedeep.mixin;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
-import nl.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
+import dev.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;

@@ -17,16 +17,16 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"nl.enjarai.rollingdowninthedeep.RollingDownInTheDeep"
+			"dev.enjarai.rollingdowninthedeep.RollingDownInTheDeep"
 		]
 	},
 	"mixins": [
 		"rolling_down_in_the_deep.mixins.json"
 	],
 	"depends": {
-		"minecraft": ">=1.20- <1.20.1-",
+		"minecraft": ">=1.20.3 <=1.20.4",
 		"fabric-api": "*",
-		"do_a_barrel_roll": ">=3.0.0-"
+		"do_a_barrel_roll": ">=3.5.0"
 	},
 	"custom": {
 		"modmenu": {
