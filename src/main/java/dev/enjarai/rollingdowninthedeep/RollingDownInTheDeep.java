@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 public class RollingDownInTheDeep implements ModInitializer {
 	public static final String MOD_ID = "rolling_down_in_the_deep";
 	//	public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
-	public static final Sensitivity SMOOTHING = new Sensitivity(.1, .1, .1);
+	public static final Sensitivity SMOOTHING = new Sensitivity(.02, .02, .02);
 	public static final RollGroup SWIM_GROUP = RollGroup.of(id("swimming"));
 	public static final RollGroup DABR_GROUP = RollGroup.of(new Identifier("do_a_barrel_roll", "fall_flying"));
 
