@@ -3,12 +3,15 @@ package dev.enjarai.rollingdowninthedeep;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.util.SmoothUtil;
 import net.minecraft.util.Identifier;
 import nl.enjarai.cicada.api.util.ProperLogger;
 import nl.enjarai.doabarrelroll.DoABarrelRollClient;
 import nl.enjarai.doabarrelroll.api.RollEntity;
+import nl.enjarai.doabarrelroll.api.event.RollContext;
 import nl.enjarai.doabarrelroll.api.event.RollEvents;
 import nl.enjarai.doabarrelroll.api.event.RollGroup;
+import nl.enjarai.doabarrelroll.api.rotation.RotationInstant;
 import nl.enjarai.doabarrelroll.config.ModConfig;
 import nl.enjarai.doabarrelroll.config.Sensitivity;
 import nl.enjarai.doabarrelroll.flight.RotationModifiers;
@@ -16,11 +19,15 @@ import nl.enjarai.doabarrelroll.math.MagicNumbers;
 import org.joml.Matrix3d;
 import org.joml.Vector3d;
 import org.slf4j.Logger;
+// Import necessary classes
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.GameOptions;
 
 public class RollingDownInTheDeep implements ModInitializer {
 	public static final String MOD_ID = "rolling_down_in_the_deep";
 	public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
-	public static final Sensitivity SMOOTHING = new Sensitivity(5, 5, 1);
+	public static final Sensitivity SMOOTHING = new Sensitivity(.1, .1, .1);
 
 	public static final RollGroup SWIM_GROUP = RollGroup.of(id("swimming"));
 	public static final RollGroup DABR_GROUP = RollGroup.of(new Identifier("do_a_barrel_roll", "fall_flying"));
@@ -29,18 +36,22 @@ public class RollingDownInTheDeep implements ModInitializer {
 	public void onInitialize() {
 		SWIM_GROUP.trueIf(RollingDownInTheDeep::shouldRoll);
 
-//		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
-//				.useModifier(RotationModifiers.strafeButtons(1800)), // hahha yes, we dont need this do we? i sure hope we dont
-//				,
-//				10, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+		// Smooth the camera rotation
+		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
+						.useModifier(CameraModifiers::smoothCamera),
+				1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+
+		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
+						.useModifier(StrafeRollModifiers::applyStrafeRoll),
+				1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
 		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
 						.useModifier(ModConfig.INSTANCE::configureRotation),
 				1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
-//		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context // TODO slight roll in yaw direction
-//				.useModifier(SwimModifiers::reorient),
-//				40, SWIM_GROUP);
+		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context // TODO slight roll in yaw direction
+				.useModifier(SwimModifiers::reorient),
+				40, SWIM_GROUP);
 
 		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context
 				.useModifier(RotationModifiers.smoothing(
@@ -63,7 +74,10 @@ public class RollingDownInTheDeep implements ModInitializer {
 		}
 		moveInput.mul(speed);
 		// Multiply the Y component to compensate for funky vanilla velocity handling in water
-		moveInput.y *= 4;
+		// (this scalers feel right idk)
+		moveInput.x *= 1.5;
+		moveInput.z *= 1.5;
+		moveInput.y *= 1.5;
 		return moveInput;
 	}
 
@@ -74,6 +88,7 @@ public class RollingDownInTheDeep implements ModInitializer {
 	}
 
 	public static boolean enabled() {
+		// idk the point of this function
 		return true;
 	}
 
