@@ -26,26 +26,29 @@ public class RollingDownInTheDeep implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+
 		SWIM_GROUP.trueIf(RollingDownInTheDeep::shouldRoll);
+		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> {
+			if (SWIM_GROUP.get() && !DABR_GROUP.get()) {
+				context.useModifier(CameraModifiers::smoothCamera)
+						.useModifier(StrafeRollModifiers::applyStrafeRoll)
+						.useModifier(ModConfig.INSTANCE::configureRotation);
+			}
+		}, 1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
-		// Smooth the camera rotation
-		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
-				.useModifier(CameraModifiers::smoothCamera), 1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> {
+			if (SWIM_GROUP.get() && !DABR_GROUP.get()) {
+				context.useModifier(RotationModifiers.smoothing(
+						DoABarrelRollClient.PITCH_SMOOTHER,
+						DoABarrelRollClient.YAW_SMOOTHER,
+						DoABarrelRollClient.ROLL_SMOOTHER,
+						SMOOTHING
+				));
+			}
+		}, 3000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
-		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context.useModifier(StrafeRollModifiers::applyStrafeRoll),
-				1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
-
-		RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context.useModifier(ModConfig.INSTANCE::configureRotation),
-				1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
-
-		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context.useModifier(SwimModifiers::reorient),
-				40, SWIM_GROUP);
-
-		RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context.useModifier(RotationModifiers.smoothing(DoABarrelRollClient.PITCH_SMOOTHER, DoABarrelRollClient.YAW_SMOOTHER,
-						DoABarrelRollClient.ROLL_SMOOTHER, SMOOTHING
-				)),
-				3000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 	}
+
 
 	public static Vector3d handleSwimVelocity(ClientPlayerEntity player, Vector3d moveInput, double speed) {
 		// Rotate the input vector to match the player's rotation
@@ -64,7 +67,7 @@ public class RollingDownInTheDeep implements ModInitializer {
 		moveInput.z *= 1.5;
 		moveInput.y *= 1.5;
 		return moveInput;
-	}
+}
 
 	public static boolean shouldRoll() {
 		var player = MinecraftClient.getInstance().player;
