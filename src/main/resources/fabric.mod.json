@@ -3,12 +3,12 @@
 	"id": "rolling_down_in_the_deep",
 	"version": "${version}",
 	"name": "Rolling Down in the Deep",
-	"description": "#TODO: if you see this ingame, please report it to the mod author (me)",
+	"description": "An addon to Do A Barrel Roll to extend its features to swimming and diving.",
 	"authors": [
 		"enjarai"
 	],
 	"contact": {
-		"homepage": "https://enjarai.nl/",
+		"homepage": "https://enjarai.dev/",
 		"sources": "https://github.com/enjarai/rolling-down-in-the-deep",
 		"issues": "https://github.com/enjarai/rolling-down-in-the-deep/issues"
 	},
@@ -16,17 +16,27 @@
 	"icon": "assets/rolling_down_in_the_deep/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
+		"client": [
 			"dev.enjarai.rollingdowninthedeep.RollingDownInTheDeep"
+		],
+		"modmenu": [
+			"dev.enjarai.rollingdowninthedeep.compat.modmenu.ModMenuIntegration"
 		]
 	},
 	"mixins": [
 		"rolling_down_in_the_deep.mixins.json"
 	],
+	"suggests": {
+		"yet_another_config_lib_v3": ">=3.1.0"
+	},
 	"depends": {
 		"minecraft": ">=1.20.3 <=1.20.4",
 		"fabric-api": "*",
-		"do_a_barrel_roll": ">=3.5.0"
+		"do_a_barrel_roll": ">=3.5.0",
+		"cicada": ">=0.6.0 <1.0.0"
+	},
+	"breaks": {
+		"optifabric": "*"
 	},
 	"custom": {
 		"modmenu": {

@@ -1,0 +1,19 @@
+config.rolling_down_in_the_deep:
+  title: §lRolling Down In The Deep
+  general:
+    .: General
+    mod_enabled: Mod Enabled
+    mod_enabled.description: > 
+      Enables or disables the addon entirely. 
+      Can also be toggled using %1$s ingame.
+
+
+category.rolling_down_in_the_deep.rolling_down_in_the_deep:
+  .: Rolling Down In The Deep
+  movement: Rolling Down In The Deep Movement
+key.rolling_down_in_the_deep:
+  toggle_enabled:
+    .: Toggle Enabled
+    enable: §aEnabled §rRolling Down In The Deep
+    disable: §cDisabled §rRolling Down In The Deep
+  open_config: Open Config
