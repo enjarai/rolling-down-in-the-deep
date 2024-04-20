@@ -1,5 +1,5 @@
 config.rolling_down_in_the_deep:
-  title: §lRolling Down In The Deep
+  title: §lRolling Down in the Deep
   general:
     .: General
     mod_enabled: Mod Enabled
@@ -9,11 +9,11 @@ config.rolling_down_in_the_deep:
 
 
 category.rolling_down_in_the_deep.rolling_down_in_the_deep:
-  .: Rolling Down In The Deep
-  movement: Rolling Down In The Deep Movement
+  .: Rolling Down in the Deep
+  movement: Rolling Down in the Deep Movement
 key.rolling_down_in_the_deep:
   toggle_enabled:
     .: Toggle Enabled
-    enable: §aEnabled §rRolling Down In The Deep
-    disable: §cDisabled §rRolling Down In The Deep
+    enable: §aEnabled §rRolling Down in the Deep
+    disable: §cDisabled §rRolling Down in the Deep
   open_config: Open Config
