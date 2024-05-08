@@ -3,10 +3,8 @@ package dev.enjarai.rollingdowninthedeep.compat.yacl;
 import dev.enjarai.rollingdowninthedeep.RollingDownInTheDeep;
 import dev.enjarai.rollingdowninthedeep.SwimKeybindings;
 import dev.enjarai.rollingdowninthedeep.config.SwimConfig;
-import dev.isxander.yacl3.api.ConfigCategory;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
-import dev.isxander.yacl3.api.YetAnotherConfigLib;
+import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.MutableText;
@@ -24,6 +22,45 @@ public class YACLImplementation {
                                                 SwimKeybindings.TOGGLE_ENABLED.getBoundKeyLocalizedText()))
                                         .build())
                                 .binding(true, () -> SwimConfig.INSTANCE.enabled, value -> SwimConfig.INSTANCE.enabled = value)
+                                .build())
+                        .group(OptionGroup.createBuilder()
+                                .name(getText("general", "strafing"))
+                                .option(getOption(Double.class, "general.strafing", "yaw_strength", false, false)
+                                        .controller(option -> getDoubleSlider(option, 0.1, 5, 0.1))
+                                        .binding(.5, () -> SwimConfig.INSTANCE.strafeYawStrength, value -> SwimConfig.INSTANCE.strafeYawStrength = value)
+                                        .build())
+                                .option(getOption(Double.class, "general.strafing", "roll_strength", false, false)
+                                        .controller(option -> getDoubleSlider(option, 0.1, 5, 0.1))
+                                        .binding(2.5, () -> SwimConfig.INSTANCE.strafeRollStrength, value -> SwimConfig.INSTANCE.strafeRollStrength = value)
+                                        .build())
+                                .option(getBooleanOption("general.strafing", "do_strafe", true, false)
+                                        .binding(true, () -> SwimConfig.INSTANCE.strafeDoStrafe, value -> SwimConfig.INSTANCE.strafeDoStrafe = value)
+                                        .build())
+                                .build())
+                        .build()
+                )
+                .category(ConfigCategory.createBuilder()
+                        .name(getText("smoothing"))
+                        .option(getBooleanOption("smoothing", "enabled", false, false)
+                                .binding(true, () -> SwimConfig.INSTANCE.smoothing.smoothingEnabled, value -> SwimConfig.INSTANCE.smoothing.smoothingEnabled = value)
+                                .build())
+                        .option(getBooleanOption("smoothing", "strafe_enabled", false, false)
+                                .binding(true, () -> SwimConfig.INSTANCE.smoothing.strafeSmoothingEnabled, value -> SwimConfig.INSTANCE.smoothing.strafeSmoothingEnabled = value)
+                                .build())
+                        .group(OptionGroup.createBuilder()
+                                .name(getText("smoothing", "strength"))
+                                .option(getOption(Double.class, "smoothing.strength", "pitch", false, false)
+                                        .controller(option -> getDoubleSlider(option, 0.1, 5, 0.1))
+                                        .binding(.5, () -> SwimConfig.INSTANCE.smoothing.values.pitch, value -> SwimConfig.INSTANCE.smoothing.values.pitch = value)
+                                        .build())
+                                .option(getOption(Double.class, "smoothing.strength", "yaw", false, false)
+                                        .controller(option -> getDoubleSlider(option, 0.1, 5, 0.1))
+                                        .binding(.5, () -> SwimConfig.INSTANCE.smoothing.values.yaw, value -> SwimConfig.INSTANCE.smoothing.values.yaw = value)
+                                        .build())
+                                .option(getOption(Double.class, "smoothing.strength", "roll", false, false)
+                                        .controller(option -> getDoubleSlider(option, 0.1, 5, 0.1))
+                                        .binding(.5, () -> SwimConfig.INSTANCE.smoothing.values.roll, value -> SwimConfig.INSTANCE.smoothing.values.roll = value)
+                                        .build())
                                 .build())
                         .build()
                 )
@@ -57,5 +94,11 @@ public class YACLImplementation {
 
     private static MutableText getText(String key) {
         return Text.translatable("config.rolling_down_in_the_deep." + key);
+    }
+
+    private static DoubleSliderControllerBuilder getDoubleSlider(Option<Double> option, double min, double max, double step) {
+        return DoubleSliderControllerBuilder.create(option)
+                .range(min, max)
+                .step(step);
     }
 }

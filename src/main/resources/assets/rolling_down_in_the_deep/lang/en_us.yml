@@ -6,7 +6,23 @@ config.rolling_down_in_the_deep:
     mod_enabled.description: > 
       Enables or disables the addon entirely. 
       Can also be toggled using %1$s ingame.
-
+    strafing:
+      .: Strafing
+      yaw_strength: Strafe Yaw Strength
+      roll_strength: Strafe Roll Strength
+      do_strafe: Move While Strafing
+      do_strafe.description: >
+        Move left and right while using the strafe buttons.
+        With this disabled, only yaw and roll will be applied when strafing.
+  smoothing:
+    .: Smoothing
+    enabled: Smoothing Enabled
+    strafe_enabled: Strafe Smoothing Enabled
+    strength:
+      .: Smoothing Strength
+      pitch: Pitch
+      yaw: Yaw
+      roll: Roll
 
 category.rolling_down_in_the_deep.rolling_down_in_the_deep:
   .: Rolling Down in the Deep

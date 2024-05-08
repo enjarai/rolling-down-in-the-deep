@@ -1,5 +1,6 @@
 package dev.enjarai.rollingdowninthedeep;
 
+import dev.enjarai.rollingdowninthedeep.config.SwimConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
@@ -11,8 +12,6 @@ import nl.enjarai.doabarrelroll.config.ModConfig;
 public class StrafeRollModifiers {
     public static final SmoothUtil STRAFE_ROLL_SMOOTHER = new SmoothUtil();
     public static final SmoothUtil STRAFE_YAW_SMOOTHER = new SmoothUtil();
-    private static final double MAX_ROLL_ANGLE = 2.5;
-    private static final double MAX_YAW_ANGLE = 0.3;
 
     public static RotationInstant applyStrafeRoll(RotationInstant rotationInstant, RollContext context) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
@@ -23,19 +22,20 @@ public class StrafeRollModifiers {
         double yawDelta = 0;
 
         if (options.leftKey.isPressed() && !options.rightKey.isPressed()) {
-            rollDelta = -MAX_ROLL_ANGLE;
-            yawDelta = -MAX_YAW_ANGLE;
+            rollDelta = -SwimConfig.INSTANCE.strafeRollStrength;
+            yawDelta = -SwimConfig.INSTANCE.strafeYawStrength;
         } else if (options.rightKey.isPressed() && !options.leftKey.isPressed()) {
-            rollDelta = MAX_ROLL_ANGLE;
-            yawDelta = MAX_YAW_ANGLE;
+            rollDelta = SwimConfig.INSTANCE.strafeRollStrength;
+            yawDelta = SwimConfig.INSTANCE.strafeYawStrength;
         }
 
-        double currentYaw = rotationInstant.yaw();
-        double targetYaw = currentYaw + yawDelta;
+        if (SwimConfig.INSTANCE.smoothing.strafeSmoothingEnabled) {
+            rollDelta = STRAFE_ROLL_SMOOTHER.smooth(rollDelta,
+                    1 / SwimConfig.INSTANCE.smoothing.values.roll * context.getRenderDelta());
+            yawDelta = STRAFE_YAW_SMOOTHER.smooth(yawDelta,
+                    1 / SwimConfig.INSTANCE.smoothing.values.yaw * context.getRenderDelta());
+        }
 
-        double smoothedRoll = STRAFE_ROLL_SMOOTHER.smooth(rollDelta, ModConfig.INSTANCE.getSmoothing().roll * context.getRenderDelta());
-        double smoothedYaw = STRAFE_YAW_SMOOTHER.smooth(targetYaw - currentYaw, ModConfig.INSTANCE.getSmoothing().yaw * context.getRenderDelta());
-
-        return rotationInstant.add(0, smoothedYaw, smoothedRoll);
+        return rotationInstant.add(0, yawDelta, rollDelta);
     }
 }

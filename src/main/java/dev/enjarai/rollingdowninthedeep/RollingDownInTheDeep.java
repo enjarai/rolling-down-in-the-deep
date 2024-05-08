@@ -6,6 +6,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.util.SmoothUtil;
 import net.minecraft.util.Identifier;
 import nl.enjarai.cicada.api.util.ProperLogger;
 import nl.enjarai.doabarrelroll.DoABarrelRollClient;
@@ -23,9 +24,12 @@ import org.slf4j.Logger;
 public class RollingDownInTheDeep implements ClientModInitializer {
     public static final String MOD_ID = "rolling_down_in_the_deep";
     public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
-    public static final Sensitivity SMOOTHING = new Sensitivity(.02, .02, .02);
     public static final RollGroup SWIM_GROUP = RollGroup.of(id("swimming"));
     public static final RollGroup DABR_GROUP = RollGroup.of(new Identifier("do_a_barrel_roll", "fall_flying"));
+
+    public static final SmoothUtil YAW_SMOOTHER = new SmoothUtil();
+    public static final SmoothUtil PITCH_SMOOTHER = new SmoothUtil();
+    public static final SmoothUtil ROLL_SMOOTHER = new SmoothUtil();
 
     @Override
     public void onInitializeClient() {
@@ -35,19 +39,21 @@ public class RollingDownInTheDeep implements ClientModInitializer {
 
         SWIM_GROUP.trueIf(RollingDownInTheDeep::shouldRoll);
         RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
-                        .useModifier(CameraModifiers::smoothCamera)
-                        .useModifier(StrafeRollModifiers::applyStrafeRoll)
-                        .useModifier(ModConfig.INSTANCE::configureRotation),
+                        .useModifier(StrafeRollModifiers::applyStrafeRoll),
                 1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+
+        RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
+                        .useModifier(ModConfig.INSTANCE::configureRotation),
+                2000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
         RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context
                         .useModifier(RotationModifiers.smoothing(
-                                DoABarrelRollClient.PITCH_SMOOTHER,
-                                DoABarrelRollClient.YAW_SMOOTHER,
-                                DoABarrelRollClient.ROLL_SMOOTHER,
-                                SMOOTHING
+                                PITCH_SMOOTHER,
+                                YAW_SMOOTHER,
+                                ROLL_SMOOTHER,
+                                SwimConfig.INSTANCE.smoothing.values
                         )),
-                3000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+                3000, () -> SWIM_GROUP.get() && !DABR_GROUP.get() && SwimConfig.INSTANCE.smoothing.smoothingEnabled);
 
     }
 
@@ -58,6 +64,10 @@ public class RollingDownInTheDeep implements ClientModInitializer {
         matrix.rotateY(-player.getYaw() * MagicNumbers.TORAD);
         matrix.rotateX(player.getPitch() * MagicNumbers.TORAD);
         matrix.rotateZ(((RollEntity) player).doABarrelRoll$getRoll() * MagicNumbers.TORAD);
+
+        if (!SwimConfig.INSTANCE.strafeDoStrafe) {
+            moveInput.x = 0;
+        }
 
         moveInput.mul(matrix);
         if (moveInput.lengthSquared() > 1) {
