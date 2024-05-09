@@ -15,6 +15,8 @@ that extends its unlocked camera features to underwater environments.
 It redesigns swimming to be more interesting and satisfying by 
 giving players full pitch, yaw and roll control.
 
+![A gif of someone swimming with the mod and dolphins grace](img/swimming.gif)
+
 ## Controls
 
 The default controls are as follows, but can be modified:
