@@ -27,7 +27,7 @@ public class YACLImplementation {
                                 .name(getText("general", "strafing"))
                                 .option(getOption(Double.class, "general.strafing", "yaw_strength", false, false)
                                         .controller(option -> getDoubleSlider(option, 0.1, 5, 0.1))
-                                        .binding(.5, () -> SwimConfig.INSTANCE.strafeYawStrength, value -> SwimConfig.INSTANCE.strafeYawStrength = value)
+                                        .binding(1.0, () -> SwimConfig.INSTANCE.strafeYawStrength, value -> SwimConfig.INSTANCE.strafeYawStrength = value)
                                         .build())
                                 .option(getOption(Double.class, "general.strafing", "roll_strength", false, false)
                                         .controller(option -> getDoubleSlider(option, 0.1, 5, 0.1))

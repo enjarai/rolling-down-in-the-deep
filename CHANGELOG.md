@@ -1,0 +1,2 @@
+- Fixed a small mistake in the config.
+- Marked the mod as 1.20.1 compatible.
