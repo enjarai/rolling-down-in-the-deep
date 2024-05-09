@@ -1,4 +1,4 @@
-# Rolling Down in the Deep
+<img style="text-align:center" src="img/banner-text-cropped.png">
 
 [<img alt="discord-plural" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg">](https://discord.gg/WcYsDDQtyR)
 [<img alt="kofi-singular" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/donate/kofi-singular_vector.svg">](https://ko-fi.com/enjarai)
