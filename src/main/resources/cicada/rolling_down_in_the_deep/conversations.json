@@ -1,0 +1,100 @@
+{
+  "mod_id": "rolling_down_in_the_deep",
+
+  "conversations": {
+    "cicada:greetings": {
+      "lines": [
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "do_a_barrel_roll"
+          },
+          "order": 25,
+          "text": "Well... you know, your thing is rolling and all that right? Maybe you could say 'Ready to roll!' instead..."
+        },
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "do_a_barrel_roll"
+          },
+          "order": 27,
+          "text": "Y-you like it?"
+        },
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "do_a_barrel_roll"
+          },
+          "order": 29,
+          "text": ":D"
+        }
+      ]
+    },
+    "cicada:good_old_days": {
+      "lines": [
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "do_a_barrel_roll"
+          },
+          "order": 11,
+          "text": "Well... I don't know about that..."
+        }
+      ]
+    },
+
+    "do_a_barrel_roll:flight_sim": {
+      "lines": [
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "do_a_barrel_roll"
+          },
+          "order": 10,
+          "text": "O-or a... swimming sim? Does that exist?"
+        }
+      ]
+    },
+    "do_a_barrel_roll:rolling_down_in_the_deep": {
+      "lines": [
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "do_a_barrel_roll"
+          },
+          "order": 10,
+          "text": "H-hi! That's me, here I am!"
+        }
+      ]
+    },
+    "do_a_barrel_roll:modrinth": {
+      "lines": [
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "do_a_barrel_roll"
+          },
+          "order": 20,
+          "text": "I-i'm available on Curseforge! Is that bad??"
+        }
+      ]
+    },
+
+    "cicada:christmas": {
+      "lines": [
+        {
+          "order": 25,
+          "text": "P-PADORU PADORU!"
+        }
+      ]
+    },
+    "cicada:new_year": {
+      "lines": [
+        {
+          "order": 25,
+          "text": "\uD83C\uDF86\uD83C\uDF86\uD83C\uDF86 H-happy new year!! \uD83C\uDF86\uD83C\uDF86\uD83C\uDF86"
+        }
+      ]
+    }
+  }
+}

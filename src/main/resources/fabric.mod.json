@@ -21,6 +21,9 @@
 		],
 		"modmenu": [
 			"dev.enjarai.rollingdowninthedeep.compat.modmenu.ModMenuIntegration"
+		],
+		"cicada": [
+			"dev.enjarai.rollingdowninthedeep.CicadaInitializer"
 		]
 	},
 	"mixins": [
