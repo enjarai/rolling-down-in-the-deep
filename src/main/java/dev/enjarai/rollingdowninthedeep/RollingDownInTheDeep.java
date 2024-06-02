@@ -72,6 +72,12 @@ public class RollingDownInTheDeep implements ClientModInitializer {
         if (!SwimConfig.INSTANCE.strafeDoStrafe) {
             moveInput.x = 0;
         }
+        if (client.options.jumpKey.isPressed()) {
+            moveInput.add(0, 1.0, 0);
+        }
+        if (client.options.sneakKey.isPressed()) {
+            moveInput.add(0, -1.0, 0);
+        }
 
         moveInput.mul(matrix);
         if (moveInput.lengthSquared() > 1) {
