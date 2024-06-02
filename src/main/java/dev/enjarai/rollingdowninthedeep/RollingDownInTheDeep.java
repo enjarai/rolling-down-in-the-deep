@@ -74,9 +74,11 @@ public class RollingDownInTheDeep implements ClientModInitializer {
         }
         if (client.options.jumpKey.isPressed()) {
             moveInput.add(0, 1.0, 0);
+            speed += 0.006;
         }
         if (client.options.sneakKey.isPressed()) {
             moveInput.add(0, -1.0, 0);
+            speed += 0.006;
         }
 
         moveInput.mul(matrix);
@@ -84,10 +86,6 @@ public class RollingDownInTheDeep implements ClientModInitializer {
             moveInput.normalize();
         }
         moveInput.mul(speed);
-        // (this scalers feel right idk)
-        moveInput.x *= 1.5;
-        moveInput.z *= 1.5;
-        moveInput.y *= 1.5;
         return moveInput;
     }
 

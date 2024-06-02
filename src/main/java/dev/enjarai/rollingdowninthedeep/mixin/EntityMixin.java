@@ -18,20 +18,6 @@ public abstract class EntityMixin {
 
     @Shadow public abstract Vec3d getVelocity();
 
-    @Redirect(
-            method = "updateSwimming",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/entity/Entity;isSprinting()Z"
-            )
-    )
-    private boolean rollingDownInTheDeep$disableSprintCheck(Entity entity) {
-        // Override a client-side check that would usually send a packet to
-        // stop the player from swimming without sprinting.
-        return entity instanceof ClientPlayerEntity &&
-                RollingDownInTheDeep.enabled() ||
-                entity.isSprinting();
-    }
 
     @SuppressWarnings("ConstantValue")
     @Inject(

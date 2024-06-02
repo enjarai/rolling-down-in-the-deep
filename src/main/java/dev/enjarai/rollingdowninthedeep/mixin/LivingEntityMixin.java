@@ -35,6 +35,16 @@ public abstract class LivingEntityMixin {
         return original;
     }
     @SuppressWarnings("ConstantConditions")
+    @ModifyArg(
+        method = "travel",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;multiply(DDD)Lnet/minecraft/util/math/Vec3d;", ordinal = 0),
+        index = 1
+    )
+    /// Disable the built-in velocity attenuation for the Y-axis
+    private double rollingDownInTheDeep$fixVerticalVelocity(double original, @Local(ordinal = 0) float f) {
+        return (Object) this instanceof ClientPlayerEntity && RollingDownInTheDeep.shouldRoll() ? f : original;
+    }
+    @SuppressWarnings("ConstantConditions")
     @WrapWithCondition(
         method = "tickMovement",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;swimUpward(Lnet/minecraft/registry/tag/TagKey;)V")
