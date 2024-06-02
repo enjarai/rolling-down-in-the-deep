@@ -7,7 +7,6 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.SmoothUtil;
 import nl.enjarai.doabarrelroll.api.event.RollContext;
 import nl.enjarai.doabarrelroll.api.rotation.RotationInstant;
-import nl.enjarai.doabarrelroll.config.ModConfig;
 
 public class StrafeRollModifiers {
     public static final SmoothUtil STRAFE_ROLL_SMOOTHER = new SmoothUtil();
@@ -21,6 +20,19 @@ public class StrafeRollModifiers {
         double rollDelta = 0;
         double yawDelta = 0;
 
+        double speedMult;
+        if (SwimConfig.INSTANCE.velocityEnable) {
+            speedMult = 1 + (Math.clamp(
+                // 0.5 / Base Velocity = 2.835
+                player.getVelocity().length() * 2.835,
+                SwimConfig.INSTANCE.velocityMin,
+                SwimConfig.INSTANCE.velocityMax
+            ) * SwimConfig.INSTANCE.velocityScale);
+        } else {
+            speedMult = 1.0;
+        }
+        double velocityStrength = 50 * speedMult;
+
         if (options.leftKey.isPressed() && !options.rightKey.isPressed()) {
             rollDelta = -SwimConfig.INSTANCE.strafeRollStrength;
             yawDelta = -SwimConfig.INSTANCE.strafeYawStrength;
@@ -28,14 +40,16 @@ public class StrafeRollModifiers {
             rollDelta = SwimConfig.INSTANCE.strafeRollStrength;
             yawDelta = SwimConfig.INSTANCE.strafeYawStrength;
         }
+        rollDelta *= velocityStrength;
+        yawDelta *= velocityStrength;
 
         if (SwimConfig.INSTANCE.smoothing.strafeSmoothingEnabled) {
             rollDelta = STRAFE_ROLL_SMOOTHER.smooth(rollDelta,
-                    1 / SwimConfig.INSTANCE.smoothing.values.roll * context.getRenderDelta());
+                1 / SwimConfig.INSTANCE.smoothing.values.roll * context.getRenderDelta());
             yawDelta = STRAFE_YAW_SMOOTHER.smooth(yawDelta,
-                    1 / SwimConfig.INSTANCE.smoothing.values.yaw * context.getRenderDelta());
+                1 / SwimConfig.INSTANCE.smoothing.values.yaw * context.getRenderDelta());
         }
 
-        return rotationInstant.add(0, yawDelta, rollDelta);
+        return rotationInstant.add(0, yawDelta * context.getRenderDelta(), rollDelta * context.getRenderDelta());
     }
 }

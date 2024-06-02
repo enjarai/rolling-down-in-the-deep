@@ -23,15 +23,15 @@ public class SwimModifiers {
         }
 
         return rotationInstant.add(0, 0,
-                ROLL_REORIENT_SMOOTHER.smooth(-rollDelta * strength * delta, 0.4 * delta));
+            ROLL_REORIENT_SMOOTHER.smooth(-rollDelta * strength * delta, 0.4 * delta));
     }
 
     public static RotationInstant smoothRoll(RotationInstant rotationInstant, RollContext context) {
         return RotationInstant.of(
-                rotationInstant.pitch(),
-                rotationInstant.yaw(),
-                DoABarrelRollClient.ROLL_SMOOTHER.smooth(rotationInstant.roll(),
-                        ModConfig.INSTANCE.getSmoothing().roll * context.getRenderDelta())
+            rotationInstant.pitch(),
+            rotationInstant.yaw(),
+            DoABarrelRollClient.ROLL_SMOOTHER.smooth(rotationInstant.roll(),
+                ModConfig.INSTANCE.getSmoothing().roll * context.getRenderDelta())
         );
     }
 }

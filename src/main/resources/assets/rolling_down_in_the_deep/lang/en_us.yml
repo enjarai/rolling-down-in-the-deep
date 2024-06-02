@@ -14,6 +14,14 @@ config.rolling_down_in_the_deep:
       do_strafe.description: >
         Move left and right while using the strafe buttons.
         With this disabled, only yaw and roll will be applied when strafing.
+    strafe_velocity:
+      .: Strafe Velocity
+      do_velocity: Enable Strafe Velocity
+      do_velocity.description: >
+        Apply speed as a multiplier to the strafe amount
+      clamp_min: Minimum Velocity
+      clamp_max: Maximum Velocity
+      scale: Velocity Multiplier
   smoothing:
     .: Smoothing
     enabled: Smoothing Enabled

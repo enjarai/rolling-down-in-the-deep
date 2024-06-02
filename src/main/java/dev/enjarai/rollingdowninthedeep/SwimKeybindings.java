@@ -10,14 +10,14 @@ import org.lwjgl.glfw.GLFW;
 
 public class SwimKeybindings {
     public static final KeyBinding TOGGLE_ENABLED = new KeyBinding(
-            "key.rolling_down_in_the_deep.toggle_enabled",
-            GLFW.GLFW_KEY_O,
-            "category.rolling_down_in_the_deep.rolling_down_in_the_deep"
+        "key.rolling_down_in_the_deep.toggle_enabled",
+        GLFW.GLFW_KEY_O,
+        "category.rolling_down_in_the_deep.rolling_down_in_the_deep"
     );
     public static final KeyBinding OPEN_CONFIG = new KeyBinding(
-            "key.rolling_down_in_the_deep.open_config",
-            InputUtil.UNKNOWN_KEY.getCode(),
-            "category.rolling_down_in_the_deep.rolling_down_in_the_deep"
+        "key.rolling_down_in_the_deep.open_config",
+        InputUtil.UNKNOWN_KEY.getCode(),
+        "category.rolling_down_in_the_deep.rolling_down_in_the_deep"
     );
 
     public static void clientTick(MinecraftClient client) {
@@ -27,11 +27,11 @@ public class SwimKeybindings {
 
             if (client.player != null) {
                 client.player.sendMessage(
-                        Text.translatable(
-                                "key.rolling_down_in_the_deep." +
-                                        (SwimConfig.INSTANCE.enabled ? "toggle_enabled.enable" : "toggle_enabled.disable")
-                        ),
-                        true
+                    Text.translatable(
+                        "key.rolling_down_in_the_deep." +
+                            (SwimConfig.INSTANCE.enabled ? "toggle_enabled.enable" : "toggle_enabled.disable")
+                    ),
+                    true
                 );
             }
         }
