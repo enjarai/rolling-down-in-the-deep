@@ -20,6 +20,7 @@ import nl.enjarai.doabarrelroll.math.MagicNumbers;
 import org.joml.Matrix3d;
 import org.joml.Vector3d;
 import org.slf4j.Logger;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 
 public class RollingDownInTheDeep implements ClientModInitializer {
     public static final String MOD_ID = "rolling_down_in_the_deep";
@@ -31,12 +32,15 @@ public class RollingDownInTheDeep implements ClientModInitializer {
     public static final SmoothUtil PITCH_SMOOTHER = new SmoothUtil();
     public static final SmoothUtil ROLL_SMOOTHER = new SmoothUtil();
 
+    public static final MinecraftClient client = MinecraftClient.getInstance();
     @Override
     public void onInitializeClient() {
         SwimConfig.touch();
 
         ClientTickEvents.END_CLIENT_TICK.register(SwimKeybindings::clientTick);
 
+        KeyBindingHelper.registerKeyBinding(SwimKeybindings.TOGGLE_ENABLED);
+        KeyBindingHelper.registerKeyBinding(SwimKeybindings.OPEN_CONFIG);
         SWIM_GROUP.trueIf(RollingDownInTheDeep::shouldRoll);
         RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
                         .useModifier(StrafeRollModifiers::applyStrafeRoll),

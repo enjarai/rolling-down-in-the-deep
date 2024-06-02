@@ -36,6 +36,6 @@ public class StrafeRollModifiers {
                     1 / SwimConfig.INSTANCE.smoothing.values.yaw * context.getRenderDelta());
         }
 
-        return rotationInstant.add(0, yawDelta, rollDelta);
+        return rotationInstant.add(0, yawDelta * context.getRenderDelta(), rollDelta * context.getRenderDelta());
     }
 }
