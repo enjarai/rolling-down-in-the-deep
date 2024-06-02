@@ -6,7 +6,8 @@
     "ClientPlayerEntityMixin",
     "EntityMixin",
     "LivingEntityMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "PlayerEntityRendererMixin"
   ],
   "mixins": [],
   "injectors": {
