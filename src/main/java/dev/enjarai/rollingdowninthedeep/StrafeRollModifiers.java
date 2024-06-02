@@ -7,7 +7,6 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.SmoothUtil;
 import nl.enjarai.doabarrelroll.api.event.RollContext;
 import nl.enjarai.doabarrelroll.api.rotation.RotationInstant;
-import nl.enjarai.doabarrelroll.config.ModConfig;
 
 public class StrafeRollModifiers {
     public static final SmoothUtil STRAFE_ROLL_SMOOTHER = new SmoothUtil();
@@ -46,9 +45,9 @@ public class StrafeRollModifiers {
 
         if (SwimConfig.INSTANCE.smoothing.strafeSmoothingEnabled) {
             rollDelta = STRAFE_ROLL_SMOOTHER.smooth(rollDelta,
-                    1 / SwimConfig.INSTANCE.smoothing.values.roll * context.getRenderDelta());
+                1 / SwimConfig.INSTANCE.smoothing.values.roll * context.getRenderDelta());
             yawDelta = STRAFE_YAW_SMOOTHER.smooth(yawDelta,
-                    1 / SwimConfig.INSTANCE.smoothing.values.yaw * context.getRenderDelta());
+                1 / SwimConfig.INSTANCE.smoothing.values.yaw * context.getRenderDelta());
         }
 
         return rotationInstant.add(0, yawDelta * context.getRenderDelta(), rollDelta * context.getRenderDelta());
