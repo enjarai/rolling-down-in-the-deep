@@ -17,6 +17,11 @@ public class SwimConfig extends AbstractModConfig {
     public double strafeYawStrength = 1;
 
     public boolean strafeDoStrafe = true;
+    
+    public boolean velocityEnable = true;
+    public double velocityMin = 0.4;
+    public double velocityMax = 1.0;
+    public double velocityScale = 8.65;
 
     public static class Smoothing {
         public boolean smoothingEnabled = true;
