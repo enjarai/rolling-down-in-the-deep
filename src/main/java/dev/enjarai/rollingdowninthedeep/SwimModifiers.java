@@ -1,6 +1,6 @@
 package dev.enjarai.rollingdowninthedeep;
 
-import net.minecraft.client.util.SmoothUtil;
+import net.minecraft.util.math.Smoother;
 import nl.enjarai.doabarrelroll.DoABarrelRollClient;
 import nl.enjarai.doabarrelroll.api.event.RollContext;
 import nl.enjarai.doabarrelroll.api.rotation.RotationInstant;
@@ -9,7 +9,7 @@ import nl.enjarai.doabarrelroll.math.MagicNumbers;
 
 public class SwimModifiers {
     public static final double ROLL_REORIENT_CUTOFF = Math.sqrt(10.0 / 3.0);
-    public static final SmoothUtil ROLL_REORIENT_SMOOTHER = new SmoothUtil();
+    public static final Smoother ROLL_REORIENT_SMOOTHER = new Smoother();
 
     public static RotationInstant reorient(RotationInstant rotationInstant, RollContext context) {
         var delta = context.getRenderDelta();

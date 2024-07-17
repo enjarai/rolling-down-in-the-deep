@@ -2,19 +2,16 @@ package dev.enjarai.rollingdowninthedeep;
 
 import dev.enjarai.rollingdowninthedeep.config.SwimConfig;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.util.SmoothUtil;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Smoother;
 import nl.enjarai.cicada.api.util.ProperLogger;
-import nl.enjarai.doabarrelroll.DoABarrelRollClient;
 import nl.enjarai.doabarrelroll.api.RollEntity;
 import nl.enjarai.doabarrelroll.api.event.RollEvents;
 import nl.enjarai.doabarrelroll.api.event.RollGroup;
 import nl.enjarai.doabarrelroll.config.ModConfig;
-import nl.enjarai.doabarrelroll.config.Sensitivity;
 import nl.enjarai.doabarrelroll.flight.RotationModifiers;
 import nl.enjarai.doabarrelroll.math.MagicNumbers;
 import org.joml.Matrix3d;
@@ -25,11 +22,11 @@ public class RollingDownInTheDeep implements ClientModInitializer {
     public static final String MOD_ID = "rolling_down_in_the_deep";
     public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
     public static final RollGroup SWIM_GROUP = RollGroup.of(id("swimming"));
-    public static final RollGroup DABR_GROUP = RollGroup.of(new Identifier("do_a_barrel_roll", "fall_flying"));
+    public static final RollGroup DABR_GROUP = RollGroup.of(Identifier.of("do_a_barrel_roll", "fall_flying"));
 
-    public static final SmoothUtil YAW_SMOOTHER = new SmoothUtil();
-    public static final SmoothUtil PITCH_SMOOTHER = new SmoothUtil();
-    public static final SmoothUtil ROLL_SMOOTHER = new SmoothUtil();
+    public static final Smoother YAW_SMOOTHER = new Smoother();
+    public static final Smoother PITCH_SMOOTHER = new Smoother();
+    public static final Smoother ROLL_SMOOTHER = new Smoother();
 
     @Override
     public void onInitializeClient() {
@@ -92,6 +89,6 @@ public class RollingDownInTheDeep implements ClientModInitializer {
     }
 
     public static Identifier id(String path) {
-        return new Identifier(MOD_ID, path);
+        return Identifier.of(MOD_ID, path);
     }
 }

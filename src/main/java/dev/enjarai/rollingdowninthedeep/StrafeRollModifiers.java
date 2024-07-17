@@ -4,14 +4,13 @@ import dev.enjarai.rollingdowninthedeep.config.SwimConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.util.SmoothUtil;
+import net.minecraft.util.math.Smoother;
 import nl.enjarai.doabarrelroll.api.event.RollContext;
 import nl.enjarai.doabarrelroll.api.rotation.RotationInstant;
-import nl.enjarai.doabarrelroll.config.ModConfig;
 
 public class StrafeRollModifiers {
-    public static final SmoothUtil STRAFE_ROLL_SMOOTHER = new SmoothUtil();
-    public static final SmoothUtil STRAFE_YAW_SMOOTHER = new SmoothUtil();
+    public static final Smoother STRAFE_ROLL_SMOOTHER = new Smoother();
+    public static final Smoother STRAFE_YAW_SMOOTHER = new Smoother();
 
     public static RotationInstant applyStrafeRoll(RotationInstant rotationInstant, RollContext context) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
