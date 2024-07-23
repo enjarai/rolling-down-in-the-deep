@@ -6,6 +6,10 @@ config.rolling_down_in_the_deep:
     mod_enabled.description: > 
       Enables or disables the addon entirely. 
       Can also be toggled using %1$s ingame.
+    persistent_swimming: Persistent Swimming
+    persistent_swimming.description: >
+      Attempt to prevent the player from leaving swim mode when not moving.
+      Makes use of some packet tomfoolery to troll the server.
     strafing:
       .: Strafing
       yaw_strength: Strafe Yaw Strength
@@ -14,6 +18,14 @@ config.rolling_down_in_the_deep:
       do_strafe.description: >
         Move left and right while using the strafe buttons.
         With this disabled, only yaw and roll will be applied when strafing.
+    strafe_velocity:
+      .: Strafe Velocity
+      do_velocity: Enable Strafe Velocity
+      do_velocity.description: >
+        Apply speed as a multiplier to the strafe amount
+      clamp_min: Minimum Velocity
+      clamp_max: Maximum Velocity
+      scale: Velocity Multiplier
   smoothing:
     .: Smoothing
     enabled: Smoothing Enabled
