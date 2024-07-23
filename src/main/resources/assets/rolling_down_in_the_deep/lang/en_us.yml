@@ -6,6 +6,10 @@ config.rolling_down_in_the_deep:
     mod_enabled.description: > 
       Enables or disables the addon entirely. 
       Can also be toggled using %1$s ingame.
+    persistent_swimming: Persistent Swimming
+    persistent_swimming.description: >
+      Attempt to prevent the player from leaving swim mode when not moving.
+      Makes use of some packet tomfoolery to troll the server.
     strafing:
       .: Strafing
       yaw_strength: Strafe Yaw Strength

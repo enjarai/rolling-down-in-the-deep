@@ -19,4 +19,19 @@ public class CameraModifiers {
             rotationInstant.roll()
         );
     }
+
+    public static RotationInstant configureRotation(RotationInstant rotationInstant, RollContext context) {
+        var pitch = rotationInstant.pitch();
+        var yaw = rotationInstant.yaw();
+        var roll = rotationInstant.roll();
+
+        var temp = yaw;
+        yaw = roll;
+        roll = temp;
+        if (ModConfig.INSTANCE.getInvertPitch()) {
+            pitch = -pitch;
+        }
+
+        return RotationInstant.of(pitch, yaw, roll);
+    }
 }

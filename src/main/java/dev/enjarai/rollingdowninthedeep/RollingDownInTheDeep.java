@@ -40,31 +40,32 @@ public class RollingDownInTheDeep implements ClientModInitializer {
         KeyBindingHelper.registerKeyBinding(SwimKeybindings.TOGGLE_ENABLED);
         KeyBindingHelper.registerKeyBinding(SwimKeybindings.OPEN_CONFIG);
         SWIM_GROUP.trueIf(RollingDownInTheDeep::shouldRoll);
-        RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
-                .useModifier(StrafeRollModifiers::applyStrafeRoll),
-            1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
         RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
-                .useModifier(ModConfig.INSTANCE::configureRotation),
-            2000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+                        .useModifier(CameraModifiers::configureRotation),
+                1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
+
+        RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
+                        .useModifier(StrafeRollModifiers::applyStrafeRoll),
+                2000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
         RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context
-                .useModifier(RotationModifiers.smoothing(
-                    PITCH_SMOOTHER,
-                    YAW_SMOOTHER,
-                    ROLL_SMOOTHER,
-                    SwimConfig.INSTANCE.smoothing.values
-                )),
-            3000, () -> SWIM_GROUP.get() && !DABR_GROUP.get() && SwimConfig.INSTANCE.smoothing.smoothingEnabled);
+                        .useModifier(RotationModifiers.smoothing(
+                                PITCH_SMOOTHER,
+                                YAW_SMOOTHER,
+                                ROLL_SMOOTHER,
+                                SwimConfig.INSTANCE.smoothing.values
+                        )),
+                3000, () -> SWIM_GROUP.get() && !DABR_GROUP.get() && SwimConfig.INSTANCE.smoothing.smoothingEnabled);
 
     }
 
 
     public static Vector3f movementInputToVelocity(ClientPlayerEntity player, Vector3f moveInput, float speed) {
         Matrix3d matrix = new Matrix3d()
-            .rotateY(-player.getYaw() * MagicNumbers.TORAD)
-            .rotateX(player.getPitch() * MagicNumbers.TORAD)
-            .rotateZ(((RollEntity) player).doABarrelRoll$getRoll() * MagicNumbers.TORAD);
+                .rotateY(-player.getYaw() * MagicNumbers.TORAD)
+                .rotateX(player.getPitch() * MagicNumbers.TORAD)
+                .rotateZ(((RollEntity) player).doABarrelRoll$getRoll() * MagicNumbers.TORAD);
 
         if (!SwimConfig.INSTANCE.strafeDoStrafe) moveInput.x = 0f;
 
