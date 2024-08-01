@@ -3,6 +3,7 @@ package dev.enjarai.rollingdowninthedeep;
 import dev.enjarai.rollingdowninthedeep.config.SwimConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -15,7 +16,7 @@ import nl.enjarai.doabarrelroll.config.ModConfig;
 import nl.enjarai.doabarrelroll.flight.RotationModifiers;
 import nl.enjarai.doabarrelroll.math.MagicNumbers;
 import org.joml.Matrix3d;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 import org.slf4j.Logger;
 
 public class RollingDownInTheDeep implements ClientModInitializer {
@@ -28,19 +29,24 @@ public class RollingDownInTheDeep implements ClientModInitializer {
     public static final Smoother PITCH_SMOOTHER = new Smoother();
     public static final Smoother ROLL_SMOOTHER = new Smoother();
 
+    public static final MinecraftClient client = MinecraftClient.getInstance();
+
     @Override
     public void onInitializeClient() {
         SwimConfig.touch();
 
         ClientTickEvents.END_CLIENT_TICK.register(SwimKeybindings::clientTick);
 
+        KeyBindingHelper.registerKeyBinding(SwimKeybindings.TOGGLE_ENABLED);
+        KeyBindingHelper.registerKeyBinding(SwimKeybindings.OPEN_CONFIG);
         SWIM_GROUP.trueIf(RollingDownInTheDeep::shouldRoll);
+
         RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
-                        .useModifier(StrafeRollModifiers::applyStrafeRoll),
+                        .useModifier(CameraModifiers::configureRotation),
                 1000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
         RollEvents.EARLY_CAMERA_MODIFIERS.register(context -> context
-                        .useModifier(ModConfig.INSTANCE::configureRotation),
+                        .useModifier(StrafeRollModifiers::applyStrafeRoll),
                 2000, () -> SWIM_GROUP.get() && !DABR_GROUP.get());
 
         RollEvents.LATE_CAMERA_MODIFIERS.register(context -> context
@@ -55,26 +61,28 @@ public class RollingDownInTheDeep implements ClientModInitializer {
     }
 
 
-    public static Vector3d handleSwimVelocity(ClientPlayerEntity player, Vector3d moveInput, double speed) {
-        // Rotate the input vector to match the player's rotation
-        var matrix = new Matrix3d();
-        matrix.rotateY(-player.getYaw() * MagicNumbers.TORAD);
-        matrix.rotateX(player.getPitch() * MagicNumbers.TORAD);
-        matrix.rotateZ(((RollEntity) player).doABarrelRoll$getRoll() * MagicNumbers.TORAD);
+    public static Vector3f movementInputToVelocity(ClientPlayerEntity player, Vector3f moveInput, float speed) {
+        Matrix3d matrix = new Matrix3d()
+                .rotateY(-player.getYaw() * MagicNumbers.TORAD)
+                .rotateX(player.getPitch() * MagicNumbers.TORAD)
+                .rotateZ(((RollEntity) player).doABarrelRoll$getRoll() * MagicNumbers.TORAD);
 
-        if (!SwimConfig.INSTANCE.strafeDoStrafe) {
-            moveInput.x = 0;
+        if (!SwimConfig.INSTANCE.strafeDoStrafe) moveInput.x = 0f;
+
+        if (client.options.jumpKey.isPressed()) {
+            moveInput.add(0f, 1.0f, 0f);
+            speed += 0.006f;
+        }
+        if (client.options.sneakKey.isPressed()) {
+            moveInput.add(0f, -1.0f, 0f);
+            speed += 0.006f;
         }
 
         moveInput.mul(matrix);
-        if (moveInput.lengthSquared() > 1) {
+        if (moveInput.lengthSquared() > 1f) {
             moveInput.normalize();
         }
         moveInput.mul(speed);
-        // (this scalers feel right idk)
-        moveInput.x *= 1.5;
-        moveInput.z *= 1.5;
-        moveInput.y *= 1.5;
         return moveInput;
     }
 
