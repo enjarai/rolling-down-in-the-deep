@@ -64,7 +64,7 @@ dependencies {
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	modImplementation("dev.isxander:yet-another-config-lib:${project.yacl_version}") {
+	modImplementation("dev.isxander:yet-another-config-lib:${project.yacl_version}-fabric") {
 		exclude group: "net.fabricmc"
 	}
 }
