@@ -13,6 +13,7 @@ public class SwimConfig extends AbstractModConfig {
 
     public boolean enabled = true;
     public boolean persistentSwimming = true;
+    public boolean swapYawAndRoll = false;
 
     public double strafeRollStrength = 0.2;
     public double strafeYawStrength = 1;

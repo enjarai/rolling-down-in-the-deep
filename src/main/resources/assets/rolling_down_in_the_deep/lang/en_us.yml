@@ -10,6 +10,7 @@ config.rolling_down_in_the_deep:
     persistent_swimming.description: >
       Attempt to prevent the player from leaving swim mode when not moving.
       Makes use of some packet tomfoolery to troll the server.
+    swap_yaw_and_roll: Swap Mouse Yaw and Roll
     strafing:
       .: Strafing
       yaw_strength: Strafe Yaw Strength

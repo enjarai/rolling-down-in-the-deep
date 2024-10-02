@@ -1,5 +1,6 @@
 package dev.enjarai.rollingdowninthedeep;
 
+import dev.enjarai.rollingdowninthedeep.config.SwimConfig;
 import net.minecraft.util.math.Smoother;
 import nl.enjarai.doabarrelroll.api.event.RollContext;
 import nl.enjarai.doabarrelroll.api.rotation.RotationInstant;
@@ -25,9 +26,11 @@ public class CameraModifiers {
         var yaw = rotationInstant.yaw();
         var roll = rotationInstant.roll();
 
-        var temp = yaw;
-        yaw = roll;
-        roll = temp;
+        if (!SwimConfig.INSTANCE.swapYawAndRoll) {
+            var temp = yaw;
+            yaw = roll;
+            roll = temp;
+        }
         if (ModConfig.INSTANCE.getInvertPitch()) {
             pitch = -pitch;
         }
