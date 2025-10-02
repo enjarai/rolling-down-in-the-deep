@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
     alias(libs.plugins.moddevgradle)
     alias(libs.plugins.fletching.table)
-    alias(libs.plugins.mod.publish)
+//    alias(libs.plugins.mod.publish) // FIXME breaks fletching table
 }
 
 version = "${property("mod_version")}+${libs.versions.minecraft.get()}"
@@ -121,23 +121,19 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
     val replaceProperties = mapOf(
         "minecraft_version" to libs.versions.minecraft.get(),
         "minecraft_version_range" to "[${libs.versions.minecraft.get()}]",
-        "neo_version" to libs.versions.neoforge.get(),
+        "neo_version" to neoForge.version,
         "mod_license" to "MIT",
-        "mod_id" to project.property("mod_id"),
-        "mod_version" to project.version
+        "mod_id" to providers.gradleProperty("mod_id").get(),
+        "mod_version" to version
     )
 
     inputs.properties(replaceProperties)
     expand(replaceProperties)
 
-    val inputFiles = layout.projectDirectory.dir("src/main/templates")
-    inputs.dir(inputFiles)
-    from(inputFiles)
-
-    val outputDir = layout.buildDirectory.dir("generated/sources/modMetadata")
-    into(outputDir)
-    outputs.dir(outputDir)
+    from( "src/main/templates")
+    into(layout.buildDirectory.dir("generated/sources/modMetadata"))
 }
+
 // Include the output of "generateModMetadata" as an input directory for the build
 // this works with both building through Gradle and the IDE.
 sourceSets.main.configure {
@@ -164,11 +160,11 @@ tasks.named<Jar>("jar") {
     }
 }
 
-//fletchingTable {
-//    lang.create("main") {
-//        patterns.add("assets/modid/lang/**")
-//    }
-//}
+fletchingTable {
+    lang.create("main") {
+        patterns.add("assets/${property("mod_id").toString()}/lang/**")
+    }
+}
 
 
 // configure the maven publication
