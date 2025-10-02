@@ -1,0 +1,16 @@
+[versions]
+moddevgradle = "2.0.110"
+fletching-table = "0.1.0-alpha.17"
+mod-publish = "0.4.4"
+
+minecraft = "1.21.1"
+neoforge = "21.1.209"
+
+[libraries]
+
+[bundles]
+
+[plugins]
+moddevgradle = { id = "net.neoforged.moddev", version.ref = "moddevgradle" }
+fletching-table = { id = "dev.kikugie.fletching-table.neoforge", version.ref = "fletching-table" }
+mod-publish = { id = "me.modmuss50.mod-publish-plugin", version.ref = "mod-publish" }
