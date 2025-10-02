@@ -46,13 +46,81 @@ dependencies {
     implementation("dev.isxander:yet-another-config-lib:${project.properties["yacl_version"]}")
 }
 
+neoForge {
+    parchment {
+        minecraftVersion = libs.versions.parchment.minecraft
+        mappingsVersion = libs.versions.parchment.mappings
+    }
+
+    runs {
+        with(maybeCreate("client")) {
+            client()
+
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            systemProperty("neoforge.enabledGameTestNamespaces", property("mod_id").toString())
+        }
+
+        with(maybeCreate("server")) {
+            server()
+            programArgument("--nogui")
+            systemProperty("neoforge.enabledGameTestNamespaces", property("mod_id").toString())
+        }
+
+        // This run config launches GameTestServer and runs all registered gametests, then exits.
+        // By default, the server will crash when no gametests are provided.
+        // The gametest system is also enabled by default for other run configs under the /test command.
+        with(maybeCreate("gameTestServer")) {
+            type = "gameTestServer"
+            systemProperty("neoforge.enabledGameTestNamespaces", property("mod_id").toString())
+        }
+
+        with(maybeCreate("data")) {
+            data()
+
+            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
+            // gameDirectory = project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            programArguments.addAll("--mod", property("mod_id").toString(), "--all", "--output", file("src/generated/resources").absolutePath, "--existing", file("src/main/resources").absolutePath)
+        }
+
+        // applies to all the run configs above
+        configureEach {
+            // Recommended logging data for a userdev environment
+            // The markers can be added/remove as needed separated by commas.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            systemProperty("forge.logging.markers", "REGISTRIES")
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        // define mod <-> source bindings
+        // these are used to tell the game which sources are for which mod
+        // multi mod projects should define one per mod
+        create(property("mod_id").toString()) {
+            sourceSet(sourceSets.main.get())
+        }
+    }
+}
+
+sourceSets.main.configure {
+    resources.srcDir("src/generated/resources")
+}
+
 val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
     val replaceProperties = mapOf(
         "minecraft_version" to libs.versions.minecraft,
         "minecraft_version_range" to "[${libs.versions.minecraft.get()}]",
         "neo_version" to libs.versions.neoforge,
         "mod_license" to "MIT",
-        "mod_id" to "rolling_down_in_the_deep",
+        "mod_id" to project.property("mod_id"),
         "mod_version" to project.version
     )
 
@@ -88,11 +156,11 @@ tasks.named<Jar>("jar") {
     }
 }
 
-fletchingTable {
-    lang.create("main") {
-        patterns.add("assets/modid/lang/**")
-    }
-}
+//fletchingTable {
+//    lang.create("main") {
+//        patterns.add("assets/modid/lang/**")
+//    }
+//}
 
 
 // configure the maven publication
