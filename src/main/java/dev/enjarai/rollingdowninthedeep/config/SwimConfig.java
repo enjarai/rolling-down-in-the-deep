@@ -1,12 +1,10 @@
 package dev.enjarai.rollingdowninthedeep.config;
 
-import net.fabricmc.loader.api.FabricLoader;
-import nl.enjarai.cicada.api.util.AbstractModConfig;
+import net.neoforged.fml.loading.FMLPaths;
 import nl.enjarai.doabarrelroll.config.Sensitivity;
 
 public class SwimConfig extends AbstractModConfig {
-    public static final SwimConfig INSTANCE = loadConfigFile(
-        FabricLoader.getInstance().getConfigDir().resolve("rolling_down_in_the_deep-client.json"), new SwimConfig());
+    public static final SwimConfig INSTANCE = loadConfigFile(FMLPaths.CONFIGDIR.get().resolve("rolling_down_in_the_deep-client.json"), new SwimConfig(), SwimConfig.class);
 
     public static void touch() {
     }

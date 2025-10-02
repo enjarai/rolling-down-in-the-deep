@@ -6,9 +6,10 @@ import dev.enjarai.rollingdowninthedeep.config.SwimConfig;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.Util;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 public class YACLImplementation {
     public static Screen generateConfigScreen(Screen parent) {
@@ -18,8 +19,8 @@ public class YACLImplementation {
                         .name(getText("general"))
                         .option(getBooleanOption("general", "mod_enabled", false, false)
                                 .description(OptionDescription.createBuilder()
-                                        .text(Text.translatable("config.rolling_down_in_the_deep.general.mod_enabled.description",
-                                                SwimKeybindings.TOGGLE_ENABLED.getBoundKeyLocalizedText()))
+                                        .text(Component.translatable("config.rolling_down_in_the_deep.general.mod_enabled.description",
+                                                SwimKeybindings.TOGGLE_ENABLED.getTranslatedKeyMessage()))
                                         .build())
                                 .binding(true, () -> SwimConfig.INSTANCE.enabled, value -> SwimConfig.INSTANCE.enabled = value)
                                 .build())
@@ -112,12 +113,12 @@ public class YACLImplementation {
                 .controller(TickBoxControllerBuilder::create);
     }
 
-    private static MutableText getText(String category, String key) {
-        return Text.translatable("config.rolling_down_in_the_deep." + category + "." + key);
+    private static MutableComponent getText(String category, String key) {
+        return Component.translatable(Util.makeDescriptionId("config", RollingDownInTheDeep.id(key).withPrefix(category + "/")));
     }
 
-    private static MutableText getText(String key) {
-        return Text.translatable("config.rolling_down_in_the_deep." + key);
+    private static MutableComponent getText(String key) {
+        return Component.translatable(Util.makeDescriptionId("config", RollingDownInTheDeep.id(key)));
     }
 
     private static DoubleSliderControllerBuilder getDoubleSlider(Option<Double> option, double min, double max, double step) {

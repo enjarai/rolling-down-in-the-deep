@@ -29,6 +29,10 @@ repositories {
         url = uri("https://maven.enjarai.dev/mirrors")
     }
 
+    maven {
+        url = uri("https://maven.su5ed.dev/releases")
+    }
+
     // YACL
     maven {
         url = uri("https://maven.isxander.dev/releases")
@@ -41,9 +45,8 @@ repositories {
 }
 
 dependencies {
-    implementation("nl.enjarai:do-a-barrel-roll:${project.properties["do_a_barrel_roll_version"]}")
-
-    implementation("dev.isxander:yet-another-config-lib:${project.properties["yacl_version"]}")
+    implementation(libs.bundles.barrel.roll)
+    implementation(libs.yacl)
 }
 
 neoForge {
@@ -116,9 +119,9 @@ sourceSets.main.configure {
 
 val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata") {
     val replaceProperties = mapOf(
-        "minecraft_version" to libs.versions.minecraft,
+        "minecraft_version" to libs.versions.minecraft.get(),
         "minecraft_version_range" to "[${libs.versions.minecraft.get()}]",
-        "neo_version" to libs.versions.neoforge,
+        "neo_version" to libs.versions.neoforge.get(),
         "mod_license" to "MIT",
         "mod_id" to project.property("mod_id"),
         "mod_version" to project.version
@@ -127,8 +130,13 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
     inputs.properties(replaceProperties)
     expand(replaceProperties)
 
-    from("src/main/templates")
-    into(layout.buildDirectory.dir("generated/sources/modMetadata"))
+    val inputFiles = layout.projectDirectory.dir("src/main/templates")
+    inputs.dir(inputFiles)
+    from(inputFiles)
+
+    val outputDir = layout.buildDirectory.dir("generated/sources/modMetadata")
+    into(outputDir)
+    outputs.dir(outputDir)
 }
 // Include the output of "generateModMetadata" as an input directory for the build
 // this works with both building through Gradle and the IDE.

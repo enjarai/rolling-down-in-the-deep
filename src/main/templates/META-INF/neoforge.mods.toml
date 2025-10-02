@@ -4,6 +4,12 @@
 # Note that there are a couple of TOML lists in this file.
 # Find more information on toml format here:  https://github.com/toml-lang/toml
 
+# The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
+modLoader="javafml" #mandatory
+
+# A version range to match for said mod loader - for regular FML @Mod it will be the FML version. This is currently 2.
+loaderVersion="[2,)" #mandatory
+
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="${mod_license}"
@@ -33,10 +39,10 @@ displayURL="https://enjarai.dev" #optional
 logoFile="assets/rolling_down_in_the_deep/icon.png" #optional
 
 # A text field displayed in the mod UI
-#credits="" #optional
+credits="Up (ported to NeoForge)" #optional
 
 # A text field displayed in the mod UI
-authors="enjarai, Up" #optional
+authors="enjarai" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''An addon to Do A Barrel Roll to extend its features to swimming and diving.'''
@@ -44,11 +50,6 @@ description='''An addon to Do A Barrel Roll to extend its features to swimming a
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 [[mixins]]
 config="${mod_id}.mixins.json"
-
-# The [[accessTransformers]] block allows you to declare where your AT file is.
-# If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
-#[[accessTransformers]]
-#file="META-INF/accesstransformer.cfg"
 
 # The coremods config file path is not configurable and is always loaded from META-INF/coremods.json
 
@@ -77,6 +78,22 @@ modId="minecraft"
 type="required"
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
 versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="do_a_barrel_roll"
+type="required"
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+versionRange="[3.7.3,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="yet_another_config_lib_v3"
+type="optional"
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+versionRange="[3.8.0+1.21.1-neoforge,)"
 ordering="NONE"
 side="BOTH"
 
