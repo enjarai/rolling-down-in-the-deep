@@ -188,70 +188,70 @@ publishing {
     }
 }
 
-publishMods {
-    file = tasks.named<Jar>("jar").map { it.archiveFile.get() }
-    displayName = "${property("mod_version")} for ${libs.versions.minecraft.get()}"
-    version = property("mod_version").toString()
-    changelog = rootProject.file("CHANGELOG.md").readText()
-    type = BETA
-    modLoaders.add("neoforge")
-
-    val min = property("publish_target_min").toString()
-    val max = property("publish_target_max").toString()
-
-    val modrinthToken = providers.gradleProperty("enjaraiModrinthToken")
-    if (modrinthToken.isPresent) {
-        modrinth {
-            projectId = property("mod_modrinth").toString()
-            accessToken = modrinthToken.get()
-
-            if (min == max) {
-                minecraftVersions.add(min)
-            } else {
-                minecraftVersionRange {
-                    start = min
-                    end = max
-                }
-            }
-
-            requires {
-                slug = "do-a-barrel-roll"
-            }
-        }
-    }
-
-    val curseforgeToken = providers.gradleProperty("enjaraiCurseforgeToken")
-    if (curseforgeToken.isPresent) {
-        curseforge {
-            projectId = property("mod_curseforge").toString()
-            accessToken = curseforgeToken.get()
-
-            if (min == max) {
-                minecraftVersions.add(min)
-            } else {
-                minecraftVersionRange {
-                    start = min
-                    end = max
-                }
-            }
-
-            requires {
-                slug = "do-a-barrel-roll"
-            }
-        }
-
-        val githubToken = providers.gradleProperty("enjaraiGithubToken")
-        if (githubToken.isPresent) {
-            github {
-                repository = property("mod_github").toString()
-                accessToken = githubToken.get()
-
-                commitish = property("git_branch").toString()
-                tagName = project.version.toString()
-            }
-        }
-    }
-}
+//publishMods {
+//    file = tasks.named<Jar>("jar").map { it.archiveFile.get() }
+//    displayName = "${property("mod_version")} for ${libs.versions.minecraft.get()}"
+//    version = property("mod_version").toString()
+//    changelog = rootProject.file("CHANGELOG.md").readText()
+//    type = BETA
+//    modLoaders.add("neoforge")
+//
+//    val min = property("publish_target_min").toString()
+//    val max = property("publish_target_max").toString()
+//
+//    val modrinthToken = providers.gradleProperty("enjaraiModrinthToken")
+//    if (modrinthToken.isPresent) {
+//        modrinth {
+//            projectId = property("mod_modrinth").toString()
+//            accessToken = modrinthToken.get()
+//
+//            if (min == max) {
+//                minecraftVersions.add(min)
+//            } else {
+//                minecraftVersionRange {
+//                    start = min
+//                    end = max
+//                }
+//            }
+//
+//            requires {
+//                slug = "do-a-barrel-roll"
+//            }
+//        }
+//    }
+//
+//    val curseforgeToken = providers.gradleProperty("enjaraiCurseforgeToken")
+//    if (curseforgeToken.isPresent) {
+//        curseforge {
+//            projectId = property("mod_curseforge").toString()
+//            accessToken = curseforgeToken.get()
+//
+//            if (min == max) {
+//                minecraftVersions.add(min)
+//            } else {
+//                minecraftVersionRange {
+//                    start = min
+//                    end = max
+//                }
+//            }
+//
+//            requires {
+//                slug = "do-a-barrel-roll"
+//            }
+//        }
+//
+//        val githubToken = providers.gradleProperty("enjaraiGithubToken")
+//        if (githubToken.isPresent) {
+//            github {
+//                repository = property("mod_github").toString()
+//                accessToken = githubToken.get()
+//
+//                commitish = property("git_branch").toString()
+//                tagName = project.version.toString()
+//            }
+//        }
+//    }
+//}
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {

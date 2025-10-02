@@ -1,7 +1,7 @@
 [versions]
 moddevgradle = "2.0.110"
-fletching-table = "0.1.0-alpha.17"
-mod-publish = "0.4.4"
+fletching-table = "0.1.0-alpha.20"
+mod-publish = "1.0.0"
 
 minecraft = "1.21.1"
 neoforge = "21.1.209"
