@@ -161,7 +161,7 @@ tasks.named<Jar>("jar") {
 }
 
 fletchingTable {
-    lang.create("main") {
+    lang.register("main") {
         patterns.add("assets/${property("mod_id").toString()}/lang/**")
     }
 }

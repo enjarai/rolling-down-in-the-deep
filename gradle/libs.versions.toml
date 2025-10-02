@@ -1,6 +1,6 @@
 [versions]
 moddevgradle = "2.0.110"
-fletching-table = "0.1.0-alpha.20"
+fletching-table = "0.1.0-alpha.21"
 mod-publish = "1.0.0"
 
 minecraft = "1.21.1"
