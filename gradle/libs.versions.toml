@@ -1,0 +1,27 @@
+[versions]
+moddevgradle = "2.0.110"
+fletching-table = "0.1.0-alpha.21"
+mod-publish = "1.0.0"
+
+minecraft = "1.21.1"
+neoforge = "21.1.209"
+parchment-minecraft = "1.21.1"
+parchment-mappings = "2024.11.17"
+
+do_a_barrel_roll = "3.7.3+1.21-neoforge"
+ffapi = "0.115.6+2.1.3+1.21.1"
+# https://github.com/isXander/YetAnotherConfigLib/releases
+yacl = "3.8.0+1.21.1-neoforge"
+
+[libraries]
+do_a_barrel_roll = { module = "nl.enjarai:do-a-barrel-roll", version.ref = "do_a_barrel_roll" }
+ffapi = { module = "org.sinytra.forgified-fabric-api:forgified-fabric-api", version.ref = "ffapi" }
+yacl = { module = "dev.isxander:yet-another-config-lib", version.ref = "yacl" }
+
+[bundles]
+barrel-roll = ["do_a_barrel_roll", "ffapi"]
+
+[plugins]
+moddevgradle = { id = "net.neoforged.moddev", version.ref = "moddevgradle" }
+fletching-table = { id = "dev.kikugie.fletching-table.neoforge", version.ref = "fletching-table" }
+mod-publish = { id = "me.modmuss50.mod-publish-plugin", version.ref = "mod-publish" }

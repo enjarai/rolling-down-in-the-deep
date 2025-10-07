@@ -1,6 +1,6 @@
 package dev.enjarai.rollingdowninthedeep;
 
-import net.minecraft.util.math.Smoother;
+import net.minecraft.util.SmoothDouble;
 import nl.enjarai.doabarrelroll.DoABarrelRollClient;
 import nl.enjarai.doabarrelroll.api.event.RollContext;
 import nl.enjarai.doabarrelroll.api.rotation.RotationInstant;
@@ -9,7 +9,7 @@ import nl.enjarai.doabarrelroll.math.MagicNumbers;
 
 public class SwimModifiers {
     public static final double ROLL_REORIENT_CUTOFF = Math.sqrt(10.0 / 3.0);
-    public static final Smoother ROLL_REORIENT_SMOOTHER = new Smoother();
+    public static final SmoothDouble ROLL_REORIENT_SMOOTHER = new SmoothDouble();
 
     public static RotationInstant reorient(RotationInstant rotationInstant, RollContext context) {
         var delta = context.getRenderDelta();
@@ -23,14 +23,14 @@ public class SwimModifiers {
         }
 
         return rotationInstant.add(0, 0,
-            ROLL_REORIENT_SMOOTHER.smooth(-rollDelta * strength * delta, 0.4 * delta));
+            ROLL_REORIENT_SMOOTHER.getNewDeltaValue(-rollDelta * strength * delta, 0.4 * delta));
     }
 
     public static RotationInstant smoothRoll(RotationInstant rotationInstant, RollContext context) {
         return RotationInstant.of(
             rotationInstant.pitch(),
             rotationInstant.yaw(),
-            DoABarrelRollClient.ROLL_SMOOTHER.smooth(rotationInstant.roll(),
+            DoABarrelRollClient.ROLL_SMOOTHER.getNewDeltaValue(rotationInstant.roll(),
                 ModConfig.INSTANCE.getSmoothing().roll * context.getRenderDelta())
         );
     }
