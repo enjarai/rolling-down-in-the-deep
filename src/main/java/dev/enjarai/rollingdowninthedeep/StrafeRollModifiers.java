@@ -33,10 +33,10 @@ public class StrafeRollModifiers {
         }
         double velocityStrength = 50 * speedMult;
 
-        if (options.keyLeft.isDown() && !options.keyLeft.isDown()) {
+        if (options.keyLeft.isDown() && !options.keyRight.isDown()) {
             rollDelta = -SwimConfig.INSTANCE.strafeRollStrength;
             yawDelta = -SwimConfig.INSTANCE.strafeYawStrength;
-        } else if (options.keyLeft.isDown() && !options.keyLeft.isDown()) {
+        } else if (options.keyRight.isDown() && !options.keyLeft.isDown()) {
             rollDelta = SwimConfig.INSTANCE.strafeRollStrength;
             yawDelta = SwimConfig.INSTANCE.strafeYawStrength;
         }
